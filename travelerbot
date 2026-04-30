@@ -1,0 +1,41 @@
+import re, random
+from coloroma import Fore, init
+
+init(autoreset=True)
+
+destinations = {
+    "beaches" :["Bali", "Maldives", "Phuket"]
+    "mountains" :["Swiss Alps", "Rocky Mountains", "Himalayas"]
+    "cities" :["Tokyo", "Paris", "New york"]
+}
+
+jokes = [
+    "Why do programmers hate nature? Too many bugs!"
+    "Why did the computer go to the doctor? It had a virus!"
+    "Why do travelers always feel warm? Because of all their hotspots!"
+]
+ def normalize_input(text):
+    return re.sub(r"\st"," ", text.strip().lower())
+
+def reccommend():
+    print(Fore.CYAN + "Travelbot : Beaches, mountains or cities?")
+    preference = input(Fore.YELLOW + "You: ")
+    preference = normalize_input(preference)
+
+if preference in destinations: 
+    suggestion random.choice(destinations [preference]) 
+    print(Fore.GREEN+f"TravelBot: How about (suggestion)?") 
+    print(Fore.CYAN "TravelBot: Do you like it? (yes/no)") 
+    answer input(Fore.YELLOW "You!").lower() 
+    if answer =="yes": 
+        print(Fore.GREEN "TravelBot: Awesome! Enjoy (suggestion)!") 
+    elif answer "no": 
+        print(Fore. RED "TravelBot: Lat's try another.") 
+        recommand() 
+    else: 
+        print (Fore. RED "TravelBot: I'll suggest again.") 
+        recommend() 
+else: 
+    print(Fore.RED destination.") "Travelbot: Sorry, I don't have that type of destination" 
+    recommend() 
+def packing_tips():
