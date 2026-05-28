@@ -1,0 +1,36 @@
+import random
+
+choices = ["rock", "paper", "scissors"]
+emoji = {"rock": "🪨", "paper": "📄", "scissors": "✂️"}
+score = {"wins": 0, "losses": 0, "draws": 0}
+
+def get_result(player, cpu):
+    if player == cpu:
+        return "draw"
+    if (player == "rock" and cpu == "scissors") or \
+       (player == "scissors" and cpu == "paper") or \
+       (player == "paper" and cpu == "rock"):
+        return "win"
+    return "lose"
+
+print("Rock Paper Scissors — type r, p, or s to play. q to quit.\n")
+
+while True:
+    move = input("Your move (r/p/s/q): ").strip().lower()
+    if move == "q":
+        break
+    mapping = {"r": "rock", "p": "paper", "s": "scissors"}
+    if move not in mapping:
+        print("Invalid — use r, p, or s.")
+        continue
+
+    player = mapping[move]
+    cpu = random.choice(choices)
+    result = get_result(player, cpu)
+    score[result + "s"] = score.get(result + "s", 0) + 1
+
+    print(f"  You: {emoji[player]}  CPU: {emoji[cpu]}")
+    print(f"  → {'You win!' if result == 'win' else 'You lose!' if result == 'lose' else 'Draw!'}")
+    print(f"  Score — Wins: {score['wins']}  Losses: {score['losses']}  Draws: {score['draws']}\n")
+
+print("Final score:", score)
