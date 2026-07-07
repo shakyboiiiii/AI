@@ -1,0 +1,8 @@
+import requests
+url = "https://official-joke-api.appspot.com/random_joke"
+response = requests.get(url)
+if response.status_code == 200:
+    joke_data = response.json()
+    print(f"Joke: {joke_data['setup']} - {joke_data['punchline']}")
+else:
+    print(f"Failed to retrieve joke. Status code: {response.status_code}")
