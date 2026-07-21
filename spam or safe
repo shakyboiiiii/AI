@@ -1,0 +1,98 @@
+# classifier.py - Complete Program
+
+import requests
+
+from config import HF_API_KEY
+
+
+# Setup
+
+MODEL = "facebook/bart-large-mnli"
+
+API_URL = f"https://router.huggingface.co/hf-inference/models/{MODEL}"
+
+HEADERS = {"Authorization": f"Bearer {HF_API_KEY}"}
+
+LABELS = ["Spam", "Safe"]
+
+ 
+def classify_message(message):
+
+    payload = {"inputs": message, "parameters": {"candidate_labels": LABELS}}
+
+    response = requests.post(API_URL, headers=HEADERS, json=payload, timeout=30)
+
+    if not response.ok:
+
+        raise RuntimeError(f"API error: {response.status_code}")
+
+    data = response.json()
+
+    results = list(zip(data["labels"], data["scores"]))
+
+    return sorted(results, key=lambda x: x[1], reverse=True)
+
+ 
+def show_results(message, results):
+
+    label, score = results[0]
+
+    print("\n" + "=" * 44)
+
+    print("Spam vs Safe Message Classifier")
+
+    print("=" * 44)
+
+    print(f"Message: {message}")
+
+    print(f"Result: {label} ({score*100:.1f}%)\n")
+
+    for i, (lbl, scr) in enumerate(results, 1):
+
+        print(f"{i}. {lbl}: {scr*100:.1f}%")
+
+    if label == "Spam":
+
+        print("\n⚠️  Don't click links or share info!")
+
+    else:
+
+        print("\n✅ Looks safe, stay alert!")
+
+    print("=" * 44)
+
+ 
+def main():
+
+    print("Spam Classifier - Type 'exit' to quit\n")
+
+    while True:
+
+        msg = input("Message: ").strip()
+
+        if msg.lower() == "exit":
+
+            print("Goodbye!")
+
+            break
+
+        if not msg:
+
+            print("Enter a message!\n")
+
+            continue
+
+        try:
+
+            results = classify_message(msg)
+
+            show_results(msg, results)
+
+        except Exception as e:
+
+            print(f"\n❌ Error: {e}\n")
+
+ 
+if __name__ == "__main__":
+
+    main()
